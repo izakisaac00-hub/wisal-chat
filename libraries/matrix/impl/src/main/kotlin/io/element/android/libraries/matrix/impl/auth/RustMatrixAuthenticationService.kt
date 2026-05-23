@@ -149,7 +149,7 @@ class RustMatrixAuthenticationService(
                 client.login(
                     username = username,
                     password = password,
-                    initialDeviceName = "Element X Android",
+                    initialDeviceName = "Wisale Chat Android",
                     deviceId = null,
                 )
                 // Ensure that the user is not already logged in with the same account
@@ -186,9 +186,9 @@ class RustMatrixAuthenticationService(
                 val secrets = it.secrets
                 val roomKeysVersion = it.roomKeysVersion
                 if (secrets == null || roomKeysVersion == null) {
-                    Timber.d("No secrets or roomKeysVersion found for Element Classic session ${it.userId}, skipping import")
+                    Timber.d("Aucun secret ni version de clé de salon (roomKeysVersion) trouvés pour la session Wisale Classic de ${it.userId}, importation ignorée")
                 } else {
-                    Timber.d("Trying to import secrets for Element Classic session ${it.userId}")
+                    Timber.d("Tentative d'importation des secrets pour la session Wisale Classic de ${it.userId}")
                     runCatchingExceptions {
                         SecretsBundleWithUserId.fromStr(
                             userId = it.userId.value,
