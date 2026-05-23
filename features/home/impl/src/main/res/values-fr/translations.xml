@@ -27,7 +27,7 @@
   <string name="screen_roomlist_a11y_create_message">"Créer une nouvelle discussion ou un nouveau salon"</string>
   <string name="screen_roomlist_clear_filters">"Supprimer les filtres"</string>
   <string name="screen_roomlist_empty_message">"Commencez par envoyer un message à quelqu’un."</string>
-  <string name="screen_roomlist_empty_title">"Aucune discussion pour le moment."</string>
+  <string name="screen_roomlist_empty_title">"Aucune discussion, Allez sur wisale pour Rencontrer des gens "</string>
   <string name="screen_roomlist_filter_favourites">"Favoris"</string>
   <string name="screen_roomlist_filter_favourites_empty_state_subtitle">"Vous pouvez ajouter une discussion aux favoris depuis les paramètres de la discussion.
 En attendant, vous pouvez désélectionner des filtres pour voir vos autres salons."</string>
