@@ -15,9 +15,9 @@ object BuildTimeConfig {
     const val GOOGLE_APP_ID_DEBUG = "1:912726360885:android:def0a4e454042e9b00427c"
     const val GOOGLE_APP_ID_NIGHTLY = "1:912726360885:android:e17435e0beb0303000427c"
 
-    val METADATA_HOST_REVERSED: String? = null
-    val URL_WEBSITE: String? = null
-    val URL_LOGO: String? = null
+    val METADATA_HOST_REVERSED: String? = "fr.wisale.matrix"
+    val URL_WEBSITE: String? = "https://wisale.fr"
+    val URL_LOGO: String? =  "https://i.postimg.cc/FsYkhtY3/ic-launcher.png"
     val URL_COPYRIGHT: String? = null
     val URL_ACCEPTABLE_USE: String? = null
     val URL_PRIVACY: String? = null
@@ -31,7 +31,7 @@ object BuildTimeConfig {
     val SERVICES_SENTRY_DSN: String? = null
     val SERVICES_SENTRY_DSN_RUST: String? = null
     val BUG_REPORT_URL: String? = null
-    val BUG_REPORT_APP_NAME: String? = null
+    val BUG_REPORT_APP_NAME: String? = " Wisale "
 
     const val PUSH_CONFIG_INCLUDE_FIREBASE = true
     const val PUSH_CONFIG_INCLUDE_UNIFIED_PUSH = true
