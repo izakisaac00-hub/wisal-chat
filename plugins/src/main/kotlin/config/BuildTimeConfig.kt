@@ -17,11 +17,11 @@ object BuildTimeConfig {
 
     val METADATA_HOST_REVERSED: String? = "fr.wisale.matrix"
     val URL_WEBSITE: String? = "https://wisale.fr"
-    val URL_LOGO: String? =  "https://i.postimg.cc/FsYkhtY3/ic-launcher.png"
+    val URL_LOGO: String? =  "https://wisale.fr/assets/logo-4tvh18zd.png"
     val URL_COPYRIGHT: String? = null
-    val URL_ACCEPTABLE_USE: String? = null
-    val URL_PRIVACY: String? = null
-    val URL_POLICY: String? = null
+    val URL_ACCEPTABLE_USE: String? ="https://wisale.fr/p/2-cgu"
+    val URL_PRIVACY: String? ="https://wisale.fr/p/3-privacy"
+    val URL_POLICY: String? = "https://wisale.fr/p/3-privacy"
     val SERVICES_MAPTILER_BASE_URL: String? = null
     val SERVICES_MAPTILER_APIKEY: String? = null
     val SERVICES_MAPTILER_LIGHT_MAPID: String? = null
