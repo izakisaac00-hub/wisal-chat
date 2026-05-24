@@ -5,7 +5,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial.
  * Please see LICENSE files in the repository root for full details.
  */
-
 package io.element.android.features.login.impl.screens.confirmaccountprovider
 
 import androidx.compose.runtime.Composable
@@ -21,40 +20,57 @@ import io.element.android.features.login.impl.login.LoginHelper
 import io.element.android.libraries.architecture.Presenter
 import kotlinx.coroutines.launch
 
-@Composable
-override fun present(): ConfirmAccountProviderState {
-    val accountProvider by accountProviderDataSource.flow.collectAsState()
-    val localCoroutineScope = rememberCoroutineScope()
-    val loginMode by loginHelper.collectLoginMode()
+@AssistedInject
+class ConfirmAccountProviderPresenter(
+    @Assisted private val params: Params,
+    private val accountProviderDataSource: AccountProviderDataSource,
+    private val loginHelper: LoginHelper,
+) : Presenter<ConfirmAccountProviderState> {
+    
+    data class Params(
+        val isAccountCreation: Boolean,
+    )
 
-    // ✅ Déclenche automatiquement la connexion au chargement
-    LaunchedEffect(accountProvider.url) {
-        loginHelper.submit(
+    @AssistedFactory
+    interface Factory {
+        fun create(params: Params): ConfirmAccountProviderPresenter
+    }
+
+    @Composable
+    override fun present(): ConfirmAccountProviderState {
+        val accountProvider by accountProviderDataSource.flow.collectAsState()
+        val localCoroutineScope = rememberCoroutineScope()
+        val loginMode by loginHelper.collectLoginMode()
+
+        // ✅ Déclenche automatiquement la connexion au chargement
+        LaunchedEffect(accountProvider.url) {
+            loginHelper.submit(
+                isAccountCreation = params.isAccountCreation,
+                homeserverUrl = accountProvider.url,
+                resolvedHomeserverUrl = null,
+                loginHint = null,
+            )
+        }
+
+        fun handleEvent(event: ConfirmAccountProviderEvents) {
+            when (event) {
+                ConfirmAccountProviderEvents.Continue -> localCoroutineScope.launch {
+                    loginHelper.submit(
+                        isAccountCreation = params.isAccountCreation,
+                        homeserverUrl = accountProvider.url,
+                        resolvedHomeserverUrl = null,
+                        loginHint = null,
+                    )
+                }
+                ConfirmAccountProviderEvents.ClearError -> loginHelper.clearError()
+            }
+        }
+
+        return ConfirmAccountProviderState(
+            accountProvider = accountProvider,
             isAccountCreation = params.isAccountCreation,
-            homeserverUrl = accountProvider.url,
-            resolvedHomeserverUrl = null,
-            loginHint = null,
+            loginMode = loginMode,
+            eventSink = ::handleEvent,
         )
     }
-
-    fun handleEvent(event: ConfirmAccountProviderEvents) {
-        when (event) {
-            ConfirmAccountProviderEvents.Continue -> localCoroutineScope.launch {
-                loginHelper.submit(
-                    isAccountCreation = params.isAccountCreation,
-                    homeserverUrl = accountProvider.url,
-                    resolvedHomeserverUrl = null,
-                    loginHint = null,
-                )
-            }
-            ConfirmAccountProviderEvents.ClearError -> loginHelper.clearError()
-        }
-    }
-
-    return ConfirmAccountProviderState(
-        accountProvider = accountProvider,
-        isAccountCreation = params.isAccountCreation,
-        loginMode = loginMode,
-        eventSink = ::handleEvent,
-    )
 }
