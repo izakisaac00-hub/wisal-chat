@@ -27,12 +27,6 @@ import io.element.android.libraries.matrix.api.auth.OAuthPrompt
 import io.element.android.libraries.oauth.api.OAuthAction
 import io.element.android.libraries.oauth.api.OAuthActionFlow
 
-/**
- * This class is responsible for managing the login flow, including handling OIDC actions and
- * submitting login requests.
- * It's a helper to avoid code duplication. It is used by [OnBoardingPresenter], [ConfirmAccountProviderPresenter]
- * and [ChooseAccountProviderPresenter].
- */
 @Inject
 class LoginHelper(
     private val oAuthActionFlow: OAuthActionFlow,
@@ -65,8 +59,6 @@ class LoginHelper(
     ) {
         suspend {
             authenticationService.setHomeserver(homeserverUrl).recoverCatching {
-                // No .well-known file?
-                // If the homeserver is not reachable, try using resolvedHomeserverUrl.
                 if (resolvedHomeserverUrl != null && resolvedHomeserverUrl != homeserverUrl) {
                     authenticationService.setHomeserver(resolvedHomeserverUrl).getOrThrow()
                 } else {
@@ -74,7 +66,6 @@ class LoginHelper(
                 }
             }.map { matrixHomeServerDetails ->
                 if (matrixHomeServerDetails.supportsOAuthLogin) {
-                    // Retrieve the details right now
                     val oAuthPrompt = if (isAccountCreation) OAuthPrompt.Create else OAuthPrompt.Login
                     LoginMode.OAuth(
                         authenticationService.getOAuthUrl(prompt = oAuthPrompt, loginHint = loginHint).getOrThrow()
@@ -85,7 +76,7 @@ class LoginHelper(
                 } else if (matrixHomeServerDetails.supportsPasswordLogin) {
                     LoginMode.PasswordLogin
                 } else {
-                    error("Unsupported login flow")
+                    LoginMode.PasswordLogin
                 }
             }.getOrThrow()
         }.runCatchingUpdatingState(
@@ -101,8 +92,6 @@ class LoginHelper(
 
     private suspend fun onOAuthAction(oAuthAction: OAuthAction) {
         if (oAuthAction is OAuthAction.GoBack && oAuthAction.toUnblock && loginModeState.value !is AsyncData.Loading) {
-            // Ignore GoBack action if the current state is not Loading. This GoBack action is coming from LoginFlowNode.
-            // This can happen if there is an error, for instance attempt to login again on the same account.
             return
         }
         loginModeState.value = AsyncData.Loading()
