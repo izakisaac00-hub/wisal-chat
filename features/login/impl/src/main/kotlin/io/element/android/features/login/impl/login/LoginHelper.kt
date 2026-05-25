@@ -84,9 +84,9 @@ class LoginHelper(
                     LoginMode.AccountCreation(url)
                 } else if (matrixHomeServerDetails.supportsPasswordLogin) {
                     LoginMode.PasswordLogin
-                } else {
-                    error("Unsupported login flow")
-                }
+                }else {
+                     LoginMode.PasswordLogin
+                      }
             }.getOrThrow()
         }.runCatchingUpdatingState(
             state = loginModeState,
