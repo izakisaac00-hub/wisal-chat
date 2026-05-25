@@ -27,12 +27,6 @@ import io.element.android.libraries.matrix.api.auth.OAuthPrompt
 import io.element.android.libraries.oauth.api.OAuthAction
 import io.element.android.libraries.oauth.api.OAuthActionFlow
 
-/**
- * This class is responsible for managing the login flow, including handling OIDC actions and
- * submitting login requests.
- * It's a helper to avoid code duplication. It is used by [OnBoardingPresenter], [ConfirmAccountProviderPresenter]
- * and [ChooseAccountProviderPresenter].
- */
 @Inject
 class LoginHelper(
     private val oAuthActionFlow: OAuthActionFlow,
@@ -63,49 +57,41 @@ class LoginHelper(
         resolvedHomeserverUrl: String?,
         loginHint: String?,
     ) {
-       suspend fun submit(
-    isAccountCreation: Boolean,
-    homeserverUrl: String,
-    resolvedHomeserverUrl: String?,
-    loginHint: String?,
-) {
-    suspend {
-        authenticationService.setHomeserver(homeserverUrl).recoverCatching {
-            if (resolvedHomeserverUrl != null && resolvedHomeserverUrl != homeserverUrl) {
-                authenticationService.setHomeserver(resolvedHomeserverUrl).getOrThrow()
-            } else {
-                throw it
+        suspend {
+            authenticationService.setHomeserver(homeserverUrl).recoverCatching {
+                if (resolvedHomeserverUrl != null && resolvedHomeserverUrl != homeserverUrl) {
+                    authenticationService.setHomeserver(resolvedHomeserverUrl).getOrThrow()
+                } else {
+                    throw it
+                }
+            }.map { matrixHomeServerDetails ->
+                if (matrixHomeServerDetails.supportsOAuthLogin) {
+                    val oAuthPrompt = if (isAccountCreation) OAuthPrompt.Create else OAuthPrompt.Login
+                    LoginMode.OAuth(
+                        authenticationService.getOAuthUrl(prompt = oAuthPrompt, loginHint = loginHint).getOrThrow()
+                    )
+                } else if (isAccountCreation) {
+                    val url = webClientUrlForAuthenticationRetriever.retrieve(homeserverUrl)
+                    LoginMode.AccountCreation(url)
+                } else if (matrixHomeServerDetails.supportsPasswordLogin) {
+                    LoginMode.PasswordLogin
+                } else {
+                    LoginMode.PasswordLogin
+                }
+            }.getOrThrow()
+        }.runCatchingUpdatingState(
+            state = loginModeState,
+            errorTransform = {
+                when (it) {
+                    is AccountCreationNotSupported -> it
+                    else -> ChangeServerError.from(it)
+                }
             }
-        }.map { matrixHomeServerDetails ->
-            if (matrixHomeServerDetails.supportsOAuthLogin) {
-                val oAuthPrompt = if (isAccountCreation) OAuthPrompt.Create else OAuthPrompt.Login
-                LoginMode.OAuth(
-                    authenticationService.getOAuthUrl(prompt = oAuthPrompt, loginHint = loginHint).getOrThrow()
-                )
-            } else if (isAccountCreation) {
-                val url = webClientUrlForAuthenticationRetriever.retrieve(homeserverUrl)
-                LoginMode.AccountCreation(url)
-            } else if (matrixHomeServerDetails.supportsPasswordLogin) {
-                LoginMode.PasswordLogin
-            } else {
-                // ✅ Forcez le mode password au lieu d'erreur
-                LoginMode.PasswordLogin
-            }
-        }.getOrThrow()
-    }.runCatchingUpdatingState(
-        state = loginModeState,
-        errorTransform = {
-            when (it) {
-                is AccountCreationNotSupported -> it
-                else -> ChangeServerError.from(it)
-            }
-        }
-    )
-}
+        )
+    }
+
     private suspend fun onOAuthAction(oAuthAction: OAuthAction) {
         if (oAuthAction is OAuthAction.GoBack && oAuthAction.toUnblock && loginModeState.value !is AsyncData.Loading) {
-            // Ignore GoBack action if the current state is not Loading. This GoBack action is coming from LoginFlowNode.
-            // This can happen if there is an error, for instance attempt to login again on the same account.
             return
         }
         loginModeState.value = AsyncData.Loading()
