@@ -152,19 +152,10 @@ private fun EmptyView(
             modifier = Modifier.align(Alignment.Center),
         )
         Box {
+            // ✅ Bannières de sauvegarde désactivées
             when (state.securityBannerState) {
-                SecurityBannerState.SetUpRecovery -> {
-                    SetUpRecoveryKeyBanner(
-                        onContinueClick = onSetUpRecoveryClick,
-                        onDismissClick = { eventSink(RoomListEvent.DismissBanner) },
-                    )
-                }
-                SecurityBannerState.RecoveryKeyConfirmation -> {
-                    ConfirmRecoveryKeyBanner(
-                        onContinueClick = onConfirmRecoveryKeyClick,
-                        onDismissClick = { eventSink(RoomListEvent.DismissBanner) },
-                    )
-                }
+                SecurityBannerState.SetUpRecovery -> Unit
+                SecurityBannerState.RecoveryKeyConfirmation -> Unit
                 SecurityBannerState.None -> Unit
             }
         }
@@ -228,23 +219,10 @@ private fun RoomsViewList(
         modifier = modifier,
         contentPadding = contentPadding,
     ) {
+        // ✅ Bannières de sauvegarde désactivées
         when (state.securityBannerState) {
-            SecurityBannerState.SetUpRecovery -> {
-                item {
-                    SetUpRecoveryKeyBanner(
-                        onContinueClick = onSetUpRecoveryClick,
-                        onDismissClick = { eventSink(RoomListEvent.DismissBanner) },
-                    )
-                }
-            }
-            SecurityBannerState.RecoveryKeyConfirmation -> {
-                item {
-                    ConfirmRecoveryKeyBanner(
-                        onContinueClick = onConfirmRecoveryKeyClick,
-                        onDismissClick = { eventSink(RoomListEvent.DismissBanner) },
-                    )
-                }
-            }
+            SecurityBannerState.SetUpRecovery -> Unit
+            SecurityBannerState.RecoveryKeyConfirmation -> Unit
             SecurityBannerState.None -> if (state.fullScreenIntentPermissionsState.shouldDisplayBanner) {
                 item {
                     FullScreenIntentPermissionBanner(state = state.fullScreenIntentPermissionsState)
@@ -262,8 +240,6 @@ private fun RoomsViewList(
             }
         }
 
-        // Note: do not use a key for the LazyColumn, or the scroll will not behave as expected if a room
-        // is moved to the top of the list.
         itemsIndexed(
             items = state.summaries,
             contentType = { _, room -> room.contentType() },
