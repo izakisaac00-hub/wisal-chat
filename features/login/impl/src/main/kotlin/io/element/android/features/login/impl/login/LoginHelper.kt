@@ -63,42 +63,45 @@ class LoginHelper(
         resolvedHomeserverUrl: String?,
         loginHint: String?,
     ) {
-        suspend {
-            authenticationService.setHomeserver(homeserverUrl).recoverCatching {
-                // No .well-known file?
-                // If the homeserver is not reachable, try using resolvedHomeserverUrl.
-                if (resolvedHomeserverUrl != null && resolvedHomeserverUrl != homeserverUrl) {
-                    authenticationService.setHomeserver(resolvedHomeserverUrl).getOrThrow()
-                } else {
-                    throw it
-                }
-            }.map { matrixHomeServerDetails ->
-                if (matrixHomeServerDetails.supportsOAuthLogin) {
-                    // Retrieve the details right now
-                    val oAuthPrompt = if (isAccountCreation) OAuthPrompt.Create else OAuthPrompt.Login
-                    LoginMode.OAuth(
-                        authenticationService.getOAuthUrl(prompt = oAuthPrompt, loginHint = loginHint).getOrThrow()
-                    )
-                } else if (isAccountCreation) {
-                    val url = webClientUrlForAuthenticationRetriever.retrieve(homeserverUrl)
-                    LoginMode.AccountCreation(url)
-                } else if (matrixHomeServerDetails.supportsPasswordLogin) {
-                    LoginMode.PasswordLogin
-                } else {
-                    error("Unsupported login flow")
-                }
-            }.getOrThrow()
-        }.runCatchingUpdatingState(
-            state = loginModeState,
-            errorTransform = {
-                when (it) {
-                    is AccountCreationNotSupported -> it
-                    else -> ChangeServerError.from(it)
-                }
+       suspend fun submit(
+    isAccountCreation: Boolean,
+    homeserverUrl: String,
+    resolvedHomeserverUrl: String?,
+    loginHint: String?,
+) {
+    suspend {
+        authenticationService.setHomeserver(homeserverUrl).recoverCatching {
+            if (resolvedHomeserverUrl != null && resolvedHomeserverUrl != homeserverUrl) {
+                authenticationService.setHomeserver(resolvedHomeserverUrl).getOrThrow()
+            } else {
+                throw it
             }
-        )
-    }
-
+        }.map { matrixHomeServerDetails ->
+            if (matrixHomeServerDetails.supportsOAuthLogin) {
+                val oAuthPrompt = if (isAccountCreation) OAuthPrompt.Create else OAuthPrompt.Login
+                LoginMode.OAuth(
+                    authenticationService.getOAuthUrl(prompt = oAuthPrompt, loginHint = loginHint).getOrThrow()
+                )
+            } else if (isAccountCreation) {
+                val url = webClientUrlForAuthenticationRetriever.retrieve(homeserverUrl)
+                LoginMode.AccountCreation(url)
+            } else if (matrixHomeServerDetails.supportsPasswordLogin) {
+                LoginMode.PasswordLogin
+            } else {
+                // ✅ Forcez le mode password au lieu d'erreur
+                LoginMode.PasswordLogin
+            }
+        }.getOrThrow()
+    }.runCatchingUpdatingState(
+        state = loginModeState,
+        errorTransform = {
+            when (it) {
+                is AccountCreationNotSupported -> it
+                else -> ChangeServerError.from(it)
+            }
+        }
+    )
+}
     private suspend fun onOAuthAction(oAuthAction: OAuthAction) {
         if (oAuthAction is OAuthAction.GoBack && oAuthAction.toUnblock && loginModeState.value !is AsyncData.Loading) {
             // Ignore GoBack action if the current state is not Loading. This GoBack action is coming from LoginFlowNode.
