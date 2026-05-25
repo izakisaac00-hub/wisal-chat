@@ -5,11 +5,11 @@
   <string name="screen_account_provider_form_notice">"Entrez un terme de recherche ou une adresse de domaine."</string>
   <string name="screen_account_provider_form_subtitle">"Recherchez une entreprise, une communauté ou un serveur privé."</string>
   <string name="screen_account_provider_form_title">"."</string>
-  <string name="screen_account_provider_signin_subtitle">"Assurez-vous d'avoir un compte sur Wisale avant de continuer. Sinon, rendez-vous sur wisale.fr pour créer votre compte."</string>
+  <string name="screen_account_provider_signin_subtitle">"Assurez-vous d'avoir un compte sur Wisale avant de continuer. Sinon, rendez-vous sur wisale pour créer votre compte."</string>
   <string name="screen_account_provider_signin_title">"Vous êtes sur le point de vous connecter à %s"</string>
   <string name="screen_account_provider_signup_subtitle">"Assurez-vous d'avoir un compte sur Wisale avant de continuer. Sinon, rendez-vous sur wisale.fr pour créer votre compte."</string>
-  <string name="screen_account_provider_signup_title">"Vous êtes sur le point de créer un compte sur %s"</string>
-  <string name="screen_change_account_provider_matrix_org_subtitle">"Matrix.org est un grand serveur gratuit sur le réseau public Matrix pour une communication sécurisée et décentralisée, géré par la Fondation Matrix.org."</string>
+  <string name="screen_account_provider_signup_title">"Vous êtes sur le point de créer un compte sur WisaleChat"</string>
+  <string name="screen_change_account_provider_matrix_org_subtitle">"Wisale est un  le réseau public Comorien qui regroupe 3 application WisalE app Social , WisaleChat et WIsaleShop "</string>
   <string name="screen_change_account_provider_other">"Autres"</string>
   <string name="screen_change_account_provider_subtitle">"."</string>
   <string name="screen_change_account_provider_title">"."</string>
@@ -35,7 +35,7 @@
   <string name="screen_login_form_header">"Saisissez vos identifiants"</string>
   <string name="screen_login_subtitle">"Utilisez les mêmes identifiants que ceux créés sur Wisale lors de votre création de compte"</string>
   <string name="screen_login_title">"Content de vous revoir !"</string>
-  <string name="screen_login_title_with_homeserver">"Connectez-vous à %1$s"</string>
+  <string name="screen_login_title_with_homeserver">"Connectez-vous à WisaleChat"</string>
   <string name="screen_missing_key_backup_open_element_classic">"Ouvrir Wisale Chat"</string>
   <string name="screen_missing_key_backup_step_1">"Ouvrez Wisale chat sur votre appareil"</string>
   <string name="screen_missing_key_backup_step_2_android">"Aller à Paramètres &gt; Sécurité et vie privée"</string>
@@ -46,11 +46,11 @@
   <string name="screen_onboarding_app_version">"Version %1$s"</string>
   <string name="screen_onboarding_checking_account">"Vérification du compte"</string>
   <string name="screen_onboarding_sign_in_manually">"Se connecter manuellement"</string>
-  <string name="screen_onboarding_sign_in_to">"Connectez-vous à %1$s"</string>
+  <string name="screen_onboarding_sign_in_to">"Connectez-vous à WisaleChat"</string>
   <string name="screen_onboarding_sign_in_with_qr_code">"Se connecter avec un code QR"</string>
   <string name="screen_onboarding_sign_up">"."</string>
   <string name="screen_onboarding_welcome_back">"Bon retour parmi nous"</string>
-  <string name="screen_onboarding_welcome_message">"Bienvenue sur %1$s, la messagerie conçue pour toute la communauté comorienne. Restez connectés au pays et partout dans le monde."</string>
+  <string name="screen_onboarding_welcome_message">" La messagerie conçue pour toute la communauté comorienne. Restez connectés au pays et partout dans le monde."</string>
   <string name="screen_onboarding_welcome_subtitle">"Bienvenue sur %1$s. Boosté, pour plus de rapidité et de simplicité."</string>
   <string name="screen_onboarding_welcome_title">"Bienvenue sur Wisal Chat"</string>
   <string name="screen_qr_code_login_connecting_subtitle">"Établissement d’une connexion sécurisée"</string>
