@@ -119,6 +119,19 @@
                 <data android:path="/element/" />
             </intent-filter>
             <!--
+  Wisale Chat links
+-->
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+
+    <data android:scheme="https" />
+    <!-- Matching asset file: https://chat.wisale.fr/.well-known/assetlinks.json -->
+    <data android:host="chat.wisale.fr" />
+</intent-filter>
+            <!--
               matrix: links
             -->
             <intent-filter>
