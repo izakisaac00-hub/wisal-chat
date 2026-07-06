@@ -39,7 +39,7 @@ plugins {
 }
 
 android {
-    namespace = "fr.wisale.chat"
+    namespace = "io.element.android.x"
 
     defaultConfig {
        applicationId = "fr.wisale.chat"
