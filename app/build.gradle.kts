@@ -39,13 +39,13 @@ plugins {
 }
 
 android {
-    namespace = "io.element.android.x"
+    namespace = "fr.wisale.chat"
 
     defaultConfig {
-        applicationId = BuildTimeConfig.APPLICATION_ID
+       applicationId = "fr.wisale.chat"
         targetSdk = Versions.TARGET_SDK
         versionCode = Versions.VERSION_CODE
-        versionName = Versions.VERSION_NAME
+        versionName = "1.0.0"
 
         // Keep abiFilter for the universalApk
         ndk {
@@ -103,15 +103,15 @@ android {
     logger.warnInBox("Building ${defaultConfig.applicationId} ($baseAppName) [$buildType]")
 
     buildTypes {
-        val oAuthRedirectSchemeBase = BuildTimeConfig.METADATA_HOST_REVERSED ?: "io.element.android"
+        val oAuthRedirectSchemeBase = BuildTimeConfig.METADATA_HOST_REVERSED ?: "fr.wisale"
         getByName("debug") {
-            resValue("string", "app_name", "$baseAppName dbg")
+            resValue("string", "app_name", "$baseAppName")
             resValue(
                 "string",
                 "login_redirect_scheme",
                 "$oAuthRedirectSchemeBase.debug",
             )
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ""
             signingConfig = signingConfigs.getByName("debug")
         }
 
@@ -153,7 +153,7 @@ android {
             initWith(release)
             applicationIdSuffix = ".nightly"
             versionNameSuffix = "-nightly"
-            resValue("string", "app_name", "$baseAppName nightly")
+            resValue("string", "app_name", "$baseAppName")
             resValue(
                 "string",
                 "login_redirect_scheme",
