@@ -8,7 +8,7 @@
   <string name="screen_join_room_cancel_knock_alert_description">"Êtes-vous sûr de vouloir annuler votre demande d’accès à ce salon ?"</string>
   <string name="screen_join_room_cancel_knock_alert_title">"Annuler la demande d’adhésion"</string>
   <string name="screen_join_room_decline_and_block_alert_confirmation">"Oui, refuser et bloquer"</string>
-  <string name="screen_join_room_decline_and_block_alert_message">"Êtes-vous sûr de vouloir refuser l’invitation à rejoindre ce salon ? Cela empêchera également %1$s de vous contacter ou de vous inviter dans les salons."</string>
+  <string name="screen_join_room_decline_and_block_alert_message">"Êtes-vous sûr de vouloir refuser l’invitation à rejoindre ce salon ? Cela empêchera également %1$s de vous contacter ou de vous inviter dans les salons ."</string>
   <string name="screen_join_room_decline_and_block_alert_title">"Refuser l’invitation et bloquer"</string>
   <string name="screen_join_room_decline_and_block_button_title">"Refuser et bloquer"</string>
   <string name="screen_join_room_fail_message">"L’opération a échoué."</string>
